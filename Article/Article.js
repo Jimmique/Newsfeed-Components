@@ -85,9 +85,22 @@ const data = [
     thirdParagraph: `Hodor hodor - hodor... Hodor hodor hodor hodor. Hodor. Hodor! Hodor hodor, hodor hodor hodor hodor hodor; hodor hodor? Hodor!
           Hodor hodor, HODOR hodor, hodor hodor?! Hodor! Hodor hodor, HODOR hodor, hodor hodor, hodor, hodor hodor. Hodor, hodor.
           Hodor. Hodor, hodor, hodor. Hodor hodor... Hodor hodor hodor?! Hodor, hodor... Hodor hodor HODOR hodor, hodor hodor. Hodor.`
-  }
-];
+  },
+  {
+    title: 'The Air Jordan 4 "Cool Grey" Receives an Official Release Date',
+    date: 'July 16th, 2019',
+    firstParagraph: `Near the end of last year, Jordan Brand unveiled plans for bringing back the classic “Cool Grey” colorway of its Air Jordan 4 
+          silhouette. The Nike division has recently locked down an official release date for the sneaker. `,
 
+    secondParagraph: `It’s been close to 15 years since we’ve seen the shoe’s release, arriving just in time for the 30th-anniversary of the Air 
+          Jordan 4. The sneaker dons subtle grey uppers in premium suede, contrasted against a crisp white midsole and black outsole. All the classic 
+          design elements of the shoe like its tongue tag, netting at the sidewalls, plastic lace cage and heel patch come in a tonal shade, rendering 
+          the popular footwear piece with a mature outlook. Below sits a duo-toned sole, paletted in black and white, while a transparent Air Unit 
+          bubble rounds up the details of the sneaker.`,
+
+    thirdParagraph: `The Nike Air Jordan 4 “Cool Grey” will be available at nike.com on August 1 at 7 a.m. EST for $190 USD.`
+  },
+];
 /* Step 1: Create a function that creates a component. You will want your component to look like the template below: 
   
   <div class="article">
@@ -112,3 +125,69 @@ const data = [
   Step 5: Add a new article to the array. Make sure it is in the same format as the others. Refresh the page to see the new artible
 
 */
+
+class ArticleList {
+  constructor(articles) {
+    this.articles = articles;
+    this.articlesContainer = document.querySelector(".articles");
+    this.createArticles();
+
+    this.expandButtons = document.querySelectorAll(".expandButton");
+    this.expandButtons.forEach(button =>
+      button.addEventListener("click", e => this.changeArticleExpandState(e))
+    );
+
+    this.closeButtons = document.querySelectorAll(".close");
+    this.closeButtons.forEach(button =>
+      button.addEventListener("click", e => this.removeArticle(e))
+    );
+  }
+
+  createArticles() {
+    this.articles.map(article => {
+      this.article = document.createElement("div");
+      this.article.classList.add("article");
+      this.articleH2 = document.createElement("h2");
+      this.articleH2.textContent = article.title;
+      this.articleDate = document.createElement("p");
+      this.articleDate.classList.add("date");
+      this.articleDate.textContent = article.date;
+      this.articleFirstPara = document.createElement("p");
+      this.articleFirstPara.textContent = article.firstParagraph;
+      this.articleSecondPara = document.createElement("p");
+      this.articleSecondPara.textContent = article.secondParagraph;
+      this.articleThirdPara = document.createElement("p");
+      this.articleThirdPara.textContent = article.thirdParagraph;
+      this.articleExpandButton = document.createElement("span");
+      this.articleExpandButton.classList.add("expandButton");
+      this.articleExpandButton.textContent = "Click to Expand";
+      this.articleCloseButton = document.createElement("span");
+      this.articleCloseButton.classList.add("close");
+
+      this.articlesContainer.appendChild(this.article);
+      this.article.appendChild(this.articleH2);
+      this.article.appendChild(this.articleDate);
+      this.article.appendChild(this.articleFirstPara);
+      this.article.appendChild(this.articleSecondPara);
+      this.article.appendChild(this.articleThirdPara);
+      this.article.appendChild(this.articleExpandButton);
+      this.article.appendChild(this.articleCloseButton);
+    });
+  }
+
+  changeArticleExpandState(e) {
+    e.stopPropagation();
+    e.currentTarget.textContent =
+      e.currentTarget.textContent === "Click to Expand"
+        ? "Click to Close"
+        : "Click to Expand";
+    e.target.parentNode.classList.toggle("article-open");
+  }
+
+  removeArticle(e) {
+    e.stopPropagation();
+    this.articlesContainer.removeChild(e.target.parentNode);
+  }
+}
+
+const myArticles = new ArticleList(data);
